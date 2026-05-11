@@ -13,9 +13,9 @@ Paracosm (CSE Paradigm)
   Simulation Engine     - Monte Carlo Tree Search, path exploration, risk analysis
   Strategy Genome       - Genetic evolution of problem-solving strategies
   Heartbeat Engine      - Real-time system health monitoring with PQRST ECG waveform
-  LLM Gateway           - 9+ providers, smart routing, custom LLM support, fallback
+  LLM Gateway           - OpenAI-compatible API, custom LLM support, smart routing
   Memory System         - Working/short-term/long-term/episodic/semantic + vector store
-  Tool System           - 7 built-in tools, plugin system, MCP protocol
+  Tool System           - 7 built-in tools (file/shell/system/web/code/api/data), plugin, MCP
 ```
 
 ## Tech Stack
@@ -23,7 +23,7 @@ Paracosm (CSE Paradigm)
 | Layer | Technology |
 |-------|-----------|
 | Backend | Node.js + TypeScript + Fastify |
-| LLM Gateway | Multi-provider adapter with smart routing |
+| LLM Gateway | OpenAI-compatible API with function calling |
 | Frontend | Next.js + React + TailwindCSS |
 | CLI | Commander.js + Ink (React for CLI) |
 | State | Zustand |
@@ -35,19 +35,19 @@ Paracosm (CSE Paradigm)
 ### One-Command Deploy (Linux / macOS)
 
 ```bash
-git clone <your-repo-url> paracosm && cd paracosm && bash scripts/quick-start.sh
+git clone https://github.com/jasgkabf/Paracosm.git && cd Paracosm && bash scripts/quick-start.sh
 ```
 
 ### One-Command Deploy (Windows PowerShell)
 
 ```powershell
-git clone <your-repo-url> paracosm; cd paracosm; .\scripts\quick-start.ps1
+git clone https://github.com/jasgkabf/Paracosm.git; cd Paracosm; .\scripts\quick-start.ps1
 ```
 
 ### Docker One-Command Deploy (Any Platform)
 
 ```bash
-git clone <your-repo-url> paracosm && cd paracosm && docker compose up -d
+git clone https://github.com/jasgkabf/Paracosm.git && cd Paracosm && docker compose -f docker/docker-compose.yml up -d
 ```
 
 Access: `http://your-server-ip:7529`
@@ -66,8 +66,8 @@ Access: `http://your-server-ip:7529`
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url> paracosm
-cd paracosm
+git clone https://github.com/jasgkabf/Paracosm.git
+cd Paracosm
 
 # 2. Install dependencies
 pnpm install
@@ -80,6 +80,20 @@ pnpm dev
 ```
 
 Access: `http://localhost:7529`
+
+### LLM Configuration
+
+After starting the server, open `http://your-ip:7529` in your browser:
+
+1. Go to **Settings** page
+2. Enter your LLM configuration:
+   - **API Key** — Your API key (e.g. `tp-xxxxx`)
+   - **Base URL** — Your API endpoint (e.g. `https://api.openai.com/v1`)
+   - **Model** — Model name (e.g. `gpt-4o`, `MiMo-V2.5-Pro`)
+3. Click **Test Connection** to verify
+4. Click **Save**
+
+Any OpenAI-compatible API is supported.
 
 ### CLI Usage
 
@@ -110,37 +124,41 @@ paracosm doctor
 ### Linux (Ubuntu/Debian) - One Command
 
 ```bash
-curl -fsSL https://get.pnpm.io/install.sh | sh - && \
-git clone <your-repo-url> paracosm && cd paracosm && \
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
+sudo apt-get install -y nodejs && \
+npm install -g pnpm && \
+git clone https://github.com/jasgkabf/Paracosm.git && cd Paracosm && \
 pnpm install && pnpm build && pnpm dev
 ```
 
 ### Linux (CentOS/RHEL) - One Command
 
 ```bash
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash - && \
+sudo yum install -y nodejs && \
 npm install -g pnpm && \
-git clone <your-repo-url> paracosm && cd paracosm && \
+git clone https://github.com/jasgkabf/Paracosm.git && cd Paracosm && \
 pnpm install && pnpm build && pnpm dev
 ```
 
 ### macOS - One Command
 
 ```bash
-brew install pnpm && \
-git clone <your-repo-url> paracosm && cd paracosm && \
+brew install node@20 pnpm && \
+git clone https://github.com/jasgkabf/Paracosm.git && cd Paracosm && \
 pnpm install && pnpm build && pnpm dev
 ```
 
 ### Windows - One Command (PowerShell)
 
 ```powershell
-npm install -g pnpm; git clone <your-repo-url> paracosm; cd paracosm; pnpm install; pnpm build; pnpm dev
+npm install -g pnpm; git clone https://github.com/jasgkabf/Paracosm.git; cd Paracosm; pnpm install; pnpm build; pnpm dev
 ```
 
 ### Docker (Any Platform) - One Command
 
 ```bash
-docker compose up -d
+cd Paracosm && docker compose -f docker/docker-compose.yml up -d
 ```
 
 ### Docker Build from Source
@@ -158,7 +176,7 @@ docker run -d -p 7529:7529 -v paracosm-data:/app/data paracosm
 
 ```bash
 # On your server (requires Docker)
-git clone <your-repo-url> /opt/paracosm && cd /opt/paracosm && \
+git clone https://github.com/jasgkabf/Paracosm.git /opt/paracosm && cd /opt/paracosm && \
 docker compose -f docker/docker-compose.yml up -d && \
 echo "Paracosm running at http://$(hostname -I | awk '{print $1}'):7529"
 ```
@@ -168,11 +186,9 @@ echo "Paracosm running at http://$(hostname -I | awk '{print $1}'):7529"
 ```bash
 # Create .env file
 cat > .env << 'EOF'
-PARACOSM_OPENAI_KEY=sk-your-key
-PARACOSM_ANTHROPIC_KEY=sk-ant-your-key
-PARACOSM_DEEPSEEK_KEY=sk-your-key
 PARACOSM_PORT=7529
 PARACOSM_HOST=0.0.0.0
+PARACOSM_NODE_ENV=production
 EOF
 
 # Start with env
@@ -228,12 +244,12 @@ systemctl enable paracosm && systemctl start paracosm
 ## Project Structure
 
 ```
-paracosm/
+Paracosm/
   packages/
     shared/          Types, utils, constants (shared across all packages)
     core/            Core engines (world-model, persona-mesh, simulation, strategy, orchestrator, tools, memory, heartbeat)
     llm-gateway/     LLM gateway (providers, router, middleware, fallback, custom LLM)
-    api/             REST + WebSocket API (Fastify, port 7529)
+    api/             REST + WebSocket API (Fastify, port 7529) + Agent Engine
     web/             Web frontend (Next.js + React + TailwindCSS)
     cli/             CLI (Commander + Ink)
   docker/            Docker configuration
@@ -245,15 +261,17 @@ paracosm/
 | Feature | Description |
 |---------|-------------|
 | CSE Paradigm | Construct-Simulate-Execute-Reflect-Evolve cycle |
+| Agent Engine | Real AI agent with OpenAI function calling and tool execution |
 | World Model | Structured entity graph with timeline, constraints, goals |
 | Persona Mesh | Multi-perspective debate (5 built-in personas) |
 | Simulation | MCTS path exploration with risk analysis |
 | Strategy Genome | Genetic evolution of problem-solving strategies |
 | Heartbeat | Real-time PQRST ECG waveform monitoring |
-| LLM Gateway | 9+ providers with smart routing and fallback |
-| Custom LLM | Template-based custom provider integration |
+| LLM Gateway | OpenAI-compatible API with any provider |
+| Custom LLM | Configure API Key + Base URL + Model name |
 | Memory | Multi-tier memory with vector and graph stores |
-| Tools | 7 built-in + plugin system + MCP protocol |
+| Tools | 7 built-in (file/shell/system/web/code/api/data) + plugin + MCP |
+| i18n | Chinese / English language switching |
 
 ## Default Port
 
