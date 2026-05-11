@@ -1,0 +1,53 @@
+{
+  "name": "@paracosm/llm-gateway",
+  "version": "0.1.0",
+  "description": "LLM gateway with smart routing, provider management, and fallback handling",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js",
+      "require": "./dist/config/index.js"
+    },
+    "./router": {
+      "types": "./dist/router/index.d.ts",
+      "import": "./dist/router/index.js",
+      "require": "./dist/router/index.js"
+    },
+    "./providers": {
+      "types": "./dist/providers/index.d.ts",
+      "import": "./dist/providers/index.js",
+      "require": "./dist/providers/index.js"
+    },
+    "./middleware": {
+      "types": "./dist/middleware/index.d.ts",
+      "import": "./dist/middleware/index.js",
+      "require": "./dist/middleware/index.js"
+    },
+    "./fallback": {
+      "types": "./dist/fallback/index.d.ts",
+      "import": "./dist/fallback/index.js",
+      "require": "./dist/fallback/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@paracosm/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "name": "@paracosm/core",
+  "version": "0.1.0",
+  "description": "Core engine modules for Paracosm agent framework",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./world-model": {
+      "types": "./dist/world-model/index.d.ts",
+      "import": "./dist/world-model/index.js",
+      "require": "./dist/world-model/index.js"
+    },
+    "./persona-mesh": {
+      "types": "./dist/persona-mesh/index.d.ts",
+      "import": "./dist/persona-mesh/index.js",
+      "require": "./dist/persona-mesh/index.js"
+    },
+    "./simulation": {
+      "types": "./dist/simulation/index.d.ts",
+      "import": "./dist/simulation/index.js",
+      "require": "./dist/simulation/index.js"
+    },
+    "./strategy": {
+      "types": "./dist/strategy/index.d.ts",
+      "import": "./dist/strategy/index.js",
+      "require": "./dist/strategy/index.js"
+    },
+    "./orchestrator": {
+      "types": "./dist/orchestrator/index.d.ts",
+      "import": "./dist/orchestrator/index.js",
+      "require": "./dist/orchestrator/index.js"
+    },
+    "./tools": {
+      "types": "./dist/tools/index.d.ts",
+      "import": "./dist/tools/index.js",
+      "require": "./dist/tools/index.js"
+    },
+    "./memory": {
+      "types": "./dist/memory/index.d.ts",
+      "import": "./dist/memory/index.js",
+      "require": "./dist/memory/index.js"
+    },
+    "./heartbeat": {
+      "types": "./dist/heartbeat/index.d.ts",
+      "import": "./dist/heartbeat/index.js",
+      "require": "./dist/heartbeat/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@paracosm/shared": "workspace:*",
+    "uuid": "^9.0.1",
+    "better-sqlite3": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8",
+    "@types/better-sqlite3": "^7.6.8",
+    "typescript": "^5.4.5"
+  }
+}

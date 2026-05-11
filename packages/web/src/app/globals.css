@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paracosm-green: #00ff88;
+  --paracosm-cyan: #00d4ff;
+  --paracosm-dark: #0a0a0f;
+  --paracosm-gray: #1a1a2e;
+  --paracosm-surface: #12121f;
+  --paracosm-border: #2a2a3e;
+  --paracosm-text: #e0e0e8;
+  --paracosm-muted: #6a6a8a;
+  --ecg-glow: 0 0 8px rgba(0, 255, 136, 0.6), 0 0 20px rgba(0, 255, 136, 0.3);
+  --ecg-glow-intense: 0 0 12px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.5), 0 0 60px rgba(0, 255, 136, 0.2);
+  --ecg-afterglow: rgba(0, 255, 136, 0.15);
+  --ecg-grid-color: rgba(0, 255, 136, 0.06);
+  --ecg-grid-major: rgba(0, 255, 136, 0.12);
+  --ecg-scan-color: rgba(0, 255, 136, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--paracosm-dark);
+  color: var(--paracosm-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paracosm-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--paracosm-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--paracosm-muted);
+}
+
+@keyframes ecg-trace {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ecg-afterglow-decay {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ecg-pulse-dot {
+  0%, 100% {
+    r: 2;
+    opacity: 1;
+  }
+  50% {
+    r: 4;
+    opacity: 0.6;
+  }
+}
+
+@keyframes phosphor-fade {
+  0% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(0.3);
+  }
+}
+
+.ecg-glow-text {
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.6), 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.ecg-glow-text-cyan {
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.ecg-phosphor-line {
+  filter: drop-shadow(0 0 3px rgba(0, 255, 136, 0.8)) drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+}
+
+.ecg-scan-overlay {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 136, 0.03) 40%,
+    rgba(0, 255, 136, 0.08) 50%,
+    rgba(0, 255, 136, 0.03) 60%,
+    transparent 100%
+  );
+}
+
+.medical-grid {
+  background-image:
+    linear-gradient(var(--ecg-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ecg-grid-color) 1px, transparent 1px),
+    linear-gradient(var(--ecg-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ecg-grid-major) 1px, transparent 1px);
+  background-size:
+    20px 20px,
+    20px 20px,
+    100px 100px,
+    100px 100px;
+}
+
+.vital-glow {
+  animation: vital-pulse 2s ease-in-out infinite;
+}
+
+@keyframes vital-pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.3);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-paracosm-surface/80 backdrop-blur-sm border border-paracosm-border rounded-lg;
+  }
+
+  .glow-border {
+    @apply border border-paracosm-green/30 shadow-glow-green-sm;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-paracosm-muted
+           hover:text-paracosm-text hover:bg-paracosm-gray/50 transition-colors duration-200;
+  }
+
+  .sidebar-item-active {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-paracosm-green
+           bg-paracosm-green/10 shadow-glow-green-sm;
+  }
+}

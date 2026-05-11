@@ -1,0 +1,28 @@
+{
+  "name": "@paracosm/api",
+  "version": "0.1.0",
+  "description": "Paracosm API server with Fastify",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@paracosm/shared": "workspace:*",
+    "@paracosm/core": "workspace:*",
+    "@paracosm/llm-gateway": "workspace:*",
+    "fastify": "^4.28.1",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/websocket": "^10.0.1",
+    "@fastify/rate-limit": "^9.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

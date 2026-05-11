@@ -1,0 +1,27 @@
+{
+  "name": "paracosm",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "turbo": "^2.1.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.0",
+    "@types/node": "^20.14.0"
+  },
+  "packageManager": "pnpm@9.4.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

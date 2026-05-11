@@ -1,0 +1,10 @@
+export { FallbackEngine } from './fallback-engine.js';
+export type { FallbackConfig, FallbackDecision, FallbackResult, ProviderExecution } from './fallback-engine.js';
+export { HealthChecker } from './health-checker.js';
+export type { HealthCheckConfig, ProviderHealthStatus, HealthCheckResult } from './health-checker.js';
+export { DegradationHandler } from './degradation-handler.js';
+export type { DegradationLevel, DegradationConfig, DegradationEvent, DegradationResponse, DegradationSymptom } from './degradation-handler.js';
+export { CircuitBreaker } from './circuit-breaker.js';
+export type { CircuitBreakerState as FallbackCircuitBreakerState, CircuitBreakerConfig, CircuitBreakerMetrics, CircuitBreakerEvent } from './circuit-breaker.js';
+export { RecoveryManager } from './recovery-manager.js';
+export type { RecoveryConfig, RecoveryAttempt, RecoveryStatus } from './recovery-manager.js';

@@ -1,0 +1,177 @@
+import type { LLMRequest, LLMResponse, LLMStreamChunk, TokenUsage } from '@paracosm/shared';
+import { BaseProvider, type ProviderCapabilities, type ProviderRequestOptions } from './base-provider.js';
+
+export class OpenAIProvider extends BaseProvider {
+  get name(): string {
+    return 'openai';
+  }
+
+  get capabilities(): ProviderCapabilities {
+    return {
+      streaming: true,
+      functionCalling: true,
+      vision: true,
+      audio: true,
+      embeddings: true,
+      maxContextTokens: 128000,
+      maxOutputTokens: 4096,
+    };
+  }
+
+  async complete(request: LLMRequest, options?: ProviderRequestOptions): Promise<LLMResponse> {
+    const startTime = Date.now();
+    const url = `${this.buildBaseUrl()}/chat/completions`;
+
+    const body = this.buildRequestBody(request);
+
+    try {
+      const response = await this.fetchWithTimeout(
+        url,
+        {
+          method: 'POST',
+          headers: this.buildHeaders(),
+          body: JSON.stringify(body),
+          signal: options?.signal,
+        },
+        options?.timeout ?? this.config.timeout,
+      );
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`OpenAI API error ${response.status}: ${errorBody}`);
+      }
+
+      const data = await this.parseJsonResponse<OpenAIChatResponse>(response);
+      const latencyMs = Date.now() - startTime;
+
+      return this.createResponse(
+        request.id,
+        data.choices[0]?.message?.content ?? '',
+        data.model,
+        data.choices[0]?.finish_reason ?? 'stop',
+        {
+          promptTokens: data.usage?.prompt_tokens ?? 0,
+          completionTokens: data.usage?.completion_tokens ?? 0,
+          totalTokens: data.usage?.total_tokens ?? 0,
+        },
+        latencyMs,
+      );
+    } catch (error) {
+      this.handleError(error, request.id);
+    }
+  }
+
+  async *stream(request: LLMRequest, options?: ProviderRequestOptions): AsyncIterable<LLMStreamChunk> {
+    const url = `${this.buildBaseUrl()}/chat/completions`;
+    const body = { ...this.buildRequestBody(request), stream: true };
+
+    const response = await this.fetchWithTimeout(
+      url,
+      {
+        method: 'POST',
+        headers: this.buildHeaders(),
+        body: JSON.stringify(body),
+        signal: options?.signal,
+      },
+      options?.timeout ?? this.config.timeout,
+    );
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`OpenAI API error ${response.status}: ${errorBody}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('No response body for streaming');
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === 'data: [DONE]') continue;
+          if (!trimmed.startsWith('data: ')) continue;
+
+          try {
+            const chunk = JSON.parse(trimmed.slice(6));
+            const delta = chunk.choices[0]?.delta?.content ?? '';
+            const finishReason = chunk.choices[0]?.finish_reason ?? null;
+
+            yield this.createStreamChunk(
+              request.id,
+              delta,
+              chunk.model ?? request.model,
+              finishReason,
+            );
+          } catch {
+            continue;
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
+  protected override buildHeaders(): Record<string, string> {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.config.apiKey}`,
+    };
+  }
+
+  private buildRequestBody(request: LLMRequest): OpenAIChatRequest {
+    const messages: Array<{ role: string; content: string }> = [];
+
+    if (request.systemPrompt) {
+      messages.push({ role: 'system', content: request.systemPrompt });
+    }
+
+    messages.push({ role: 'user', content: request.prompt });
+
+    return {
+      model: request.model,
+      messages,
+      temperature: request.temperature ?? 0.7,
+      max_tokens: request.maxTokens ?? 4096,
+      top_p: request.topP ?? 1,
+      stop: request.stopSequences,
+    };
+  }
+}
+
+interface OpenAIChatRequest {
+  model: string;
+  messages: Array<{ role: string; content: string }>;
+  temperature?: number;
+  max_tokens?: number;
+  top_p?: number;
+  stop?: string[];
+  stream?: boolean;
+}
+
+interface OpenAIChatResponse {
+  id: string;
+  object: string;
+  model: string;
+  choices: Array<{
+    index: number;
+    message?: { role: string; content: string };
+    delta?: { role?: string; content?: string };
+    finish_reason: string | null;
+  }>;
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@paracosm/cli",
+  "version": "0.1.0",
+  "description": "Paracosm CLI - command-line interface for multi-agent AI orchestration",
+  "bin": {
+    "paracosm": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@paracosm/shared": "workspace:*",
+    "commander": "^12.1.0",
+    "ink": "^4.4.1",
+    "react": "^18.3.0",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.4.5"
+  }
+}
