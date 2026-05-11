@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "@paracosm/shared",
   "version": "0.1.0",
   "description": "Shared types, utilities, and constants for Paracosm",

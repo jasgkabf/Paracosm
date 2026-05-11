@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "@paracosm/core",
   "version": "0.1.0",
   "description": "Core engine modules for Paracosm agent framework",

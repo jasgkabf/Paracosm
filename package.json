@@ -6,8 +6,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "pnpm --filter @paracosm/shared build && turbo run dev",
+    "dev:api": "pnpm --filter @paracosm/api dev",
+    "dev:web": "pnpm --filter @paracosm/web dev",
+    "dev:cli": "pnpm --filter @paracosm/cli dev",
     "build": "pnpm --filter @paracosm/shared build && turbo run build --filter=!@paracosm/shared",
+    "start": "pnpm --filter @paracosm/api start",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "@paracosm/api",
   "version": "0.1.0",
   "description": "Paracosm API server with Fastify",
