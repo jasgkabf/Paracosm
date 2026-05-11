@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { WebSocketManager } from '../websocket/ws-manager.js';
+import type { AgentEngine } from '../agent/agent-engine.js';
 import { registerChatRoutes } from './chat.js';
 import { registerWorldModelRoutes } from './world-model.js';
 import { registerSimulationRoutes } from './simulation.js';
@@ -11,7 +12,7 @@ import { registerUserRoutes } from './user.js';
 import { registerHeartbeatRoutes } from './heartbeat.js';
 import { registerCustomLLMRoutes } from './custom-llm.js';
 
-export function registerRoutes(fastify: FastifyInstance, wsManager: WebSocketManager): void {
+export function registerRoutes(fastify: FastifyInstance, wsManager: WebSocketManager, agentEngine: AgentEngine): void {
   fastify.register(async (instance) => {
     instance.get('/', async () => ({
       name: 'Paracosm API',
@@ -31,12 +32,12 @@ export function registerRoutes(fastify: FastifyInstance, wsManager: WebSocketMan
     }));
   });
 
-  registerChatRoutes(fastify);
+  registerChatRoutes(fastify, agentEngine);
   registerWorldModelRoutes(fastify);
   registerSimulationRoutes(fastify);
   registerStrategyRoutes(fastify);
   registerToolRoutes(fastify);
-  registerLLMConfigRoutes(fastify);
+  registerLLMConfigRoutes(fastify, agentEngine);
   registerPersonaRoutes(fastify);
   registerUserRoutes(fastify);
   registerHeartbeatRoutes(fastify);

@@ -1,10 +1,10 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { AgentEngine } from '../agent/agent-engine.js';
 
 interface ChatRequestBody {
   message: string;
-  context?: string[];
-  personas?: string[];
   stream?: boolean;
+  history?: Array<{ role: string; content: string }>;
   temperature?: number;
   maxTokens?: number;
   model?: string;
@@ -15,7 +15,7 @@ interface ChatHistoryParams {
   sessionId: string;
 }
 
-export function registerChatRoutes(fastify: FastifyInstance): void {
+export function registerChatRoutes(fastify: FastifyInstance, agentEngine: AgentEngine): void {
   fastify.post('/chat', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as ChatRequestBody;
 
@@ -23,21 +23,17 @@ export function registerChatRoutes(fastify: FastifyInstance): void {
       return reply.status(400).send({ error: 'Message is required' });
     }
 
-    const response = {
-      id: `chat_${Date.now()}`,
-      message: body.message,
-      response: `Processed: ${body.message}`,
-      model: body.model ?? 'default',
-      provider: body.provider ?? 'default',
-      usage: {
-        promptTokens: Math.ceil(body.message.length / 4),
-        completionTokens: 0,
-        totalTokens: Math.ceil(body.message.length / 4),
-      },
-      timestamp: new Date().toISOString(),
-    };
+    const response = await agentEngine.processMessage(body.message, body.history ?? []);
 
-    return reply.send(response);
+    return reply.send({
+      id: response.id,
+      message: body.message,
+      response: response.content,
+      toolCalls: response.toolCalls,
+      model: response.model,
+      usage: response.usage,
+      timestamp: response.timestamp,
+    });
   });
 
   fastify.post('/chat/stream', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -53,10 +49,23 @@ export function registerChatRoutes(fastify: FastifyInstance): void {
       Connection: 'keep-alive',
     });
 
-    const words = body.message.split(' ');
-    for (const word of words) {
-      reply.raw.write(`data: ${JSON.stringify({ type: 'token', data: word })}\n\n`);
+    try {
+      for await (const event of agentEngine.streamMessage(body.message, body.history ?? [])) {
+        if (event.type === 'token') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'token', data: event.data })}\n\n`);
+        } else if (event.type === 'tool_call') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'tool_call', data: event.data })}\n\n`);
+        } else if (event.type === 'tool_result') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'tool_result', data: event.data })}\n\n`);
+        } else if (event.type === 'error') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'error', data: event.data })}\n\n`);
+        }
+      }
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      reply.raw.write(`data: ${JSON.stringify({ type: 'error', data: msg })}\n\n`);
     }
+
     reply.raw.write(`data: ${JSON.stringify({ type: 'end' })}\n\n`);
     reply.raw.end();
   });
@@ -76,13 +85,15 @@ export function registerChatRoutes(fastify: FastifyInstance): void {
   });
 
   fastify.get('/chat/models', async (_request: FastifyRequest, reply: FastifyReply) => {
-    return reply.send({
-      models: [
-        { id: 'gpt-4o', provider: 'openai', capabilities: ['chat', 'streaming', 'function_calling'] },
-        { id: 'claude-3-5-sonnet-20241022', provider: 'anthropic', capabilities: ['chat', 'streaming'] },
-        { id: 'gemini-1.5-pro', provider: 'google', capabilities: ['chat', 'streaming', 'vision'] },
-      ],
-    });
+    const config = agentEngine.getConfigStore().getRawConfig();
+    if (config.model) {
+      return reply.send({
+        models: [
+          { id: config.model, provider: 'custom', capabilities: ['chat', 'streaming', 'function_calling'] },
+        ],
+      });
+    }
+    return reply.send({ models: [] });
   });
 
   fastify.post('/chat/completions', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -92,21 +103,21 @@ export function registerChatRoutes(fastify: FastifyInstance): void {
       return reply.status(400).send({ error: 'Message is required' });
     }
 
+    const response = await agentEngine.processMessage(body.message, body.history ?? []);
+
     return reply.send({
-      id: `comp_${Date.now()}`,
+      id: response.id,
       object: 'chat.completion',
       choices: [
         {
           index: 0,
-          message: { role: 'assistant', content: `Completion for: ${body.message}` },
-          finishReason: 'stop',
+          message: { role: 'assistant', content: response.content },
+          finishReason: response.toolCalls.length > 0 ? 'tool_calls' : 'stop',
         },
       ],
-      usage: {
-        promptTokens: Math.ceil(body.message.length / 4),
-        completionTokens: 10,
-        totalTokens: Math.ceil(body.message.length / 4) + 10,
-      },
+      toolCalls: response.toolCalls,
+      usage: response.usage,
+      model: response.model,
     });
   });
 }

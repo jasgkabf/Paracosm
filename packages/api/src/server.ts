@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import Fastify, { type FastifyInstance, type FastifyRequest, type FastifyReply } from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
@@ -10,8 +12,12 @@ import { errorHandler } from './middleware/error-handler.js';
 import { requestValidator } from './middleware/request-validator.js';
 import { responseFormatter } from './middleware/response-formatter.js';
 import { requestLogger } from './middleware/request-logger.js';
+import { AgentEngine } from './agent/agent-engine.js';
+import { ConfigStore } from './agent/config-store.js';
 
 const logger = createLogger('ParacosmServer');
+
+const DATA_DIR = path.resolve(process.cwd(), 'data');
 
 export interface ServerConfig {
   host: string;
@@ -53,6 +59,7 @@ export class ParacosmServer {
   private fastify: FastifyInstance;
   private config: ServerConfig;
   private wsManager: WebSocketManager;
+  private agentEngine: AgentEngine;
   private shuttingDown: boolean = false;
   private startTime: number = Date.now();
 
@@ -67,19 +74,27 @@ export class ParacosmServer {
     });
 
     this.wsManager = new WebSocketManager();
+
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+
+    const configStore = new ConfigStore(DATA_DIR);
+    this.agentEngine = new AgentEngine(configStore);
   }
 
   async initialize(): Promise<void> {
     await this.registerPlugins();
     this.registerMiddleware();
     this.registerHooks();
-    registerRoutes(this.fastify, this.wsManager);
+    registerRoutes(this.fastify, this.wsManager, this.agentEngine);
     this.registerHealthCheck();
     this.registerGracefulShutdown();
 
     logger.info('Server initialized', {
       host: this.config.host,
       port: this.config.port,
+      agentConfigured: this.agentEngine.isConfigured(),
     });
   }
 
@@ -119,6 +134,10 @@ export class ParacosmServer {
 
   getWebSocketManager(): WebSocketManager {
     return this.wsManager;
+  }
+
+  getAgentEngine(): AgentEngine {
+    return this.agentEngine;
   }
 
   getUptime(): number {
@@ -179,6 +198,9 @@ export class ParacosmServer {
         },
         websocket: {
           connections: this.wsManager.getConnectionCount(),
+        },
+        agent: {
+          configured: this.agentEngine.isConfigured(),
         },
       };
     });

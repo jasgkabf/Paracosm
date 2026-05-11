@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:7529/api/v1';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:7529/api/v1';
 
 interface RequestOptions {
   method?: string;
@@ -7,7 +7,7 @@ interface RequestOptions {
 }
 
 class ApiClient {
-  private baseUrl: string;
+  readonly baseUrl: string;
 
   constructor(baseUrl: string = API_BASE) {
     this.baseUrl = baseUrl;
