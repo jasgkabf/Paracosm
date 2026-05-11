@@ -39,7 +39,7 @@ export interface ServerConfig {
 
 const DEFAULT_CONFIG: ServerConfig = {
   host: '0.0.0.0',
-  port: 7529,
+  port: 7530,
   cors: {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

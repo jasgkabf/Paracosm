@@ -14,6 +14,7 @@ err()   { echo -e "${RED}[ERROR]${NC} $*"; }
 
 PROJECT_NAME="Paracosm"
 DEFAULT_PORT=7529
+API_PORT=7530
 
 check_node() {
   if command -v node &>/dev/null; then
@@ -78,6 +79,7 @@ create_env() {
     info "Creating default .env file..."
     cat > .env << ENVEOF
 PARACOSM_PORT=${DEFAULT_PORT}
+PARACOSM_API_PORT=${API_PORT}
 PARACOSM_HOST=0.0.0.0
 PARACOSM_NODE_ENV=production
 ENVEOF
@@ -88,25 +90,35 @@ ENVEOF
 }
 
 start_server() {
-  info "Starting ${PROJECT_NAME} server on port ${DEFAULT_PORT}..."
+  info "Starting ${PROJECT_NAME} API server on port ${API_PORT}..."
   echo ""
   echo -e "${GREEN}========================================${NC}"
   echo -e "${GREEN}  ${PROJECT_NAME} is running!${NC}"
   echo -e "${GREEN}========================================${NC}"
   echo -e "  Web:  ${CYAN}http://localhost:${DEFAULT_PORT}${NC}"
-  echo -e "  API:  ${CYAN}http://localhost:${DEFAULT_PORT}/api/v1${NC}"
+  echo -e "  API:  ${CYAN}http://localhost:${API_PORT}/api/v1${NC} (internal)"
   echo -e "  WS:   ${CYAN}ws://localhost:${DEFAULT_PORT}/ws${NC}"
   echo -e "${GREEN}========================================${NC}"
   echo ""
 
   if [ "${1:-}" = "--detach" ] || [ "${1:-}" = "-d" ]; then
-    nohup pnpm start > paracosm.log 2>&1 &
-    echo $! > paracosm.pid
-    ok "Server started in background (PID: $(cat paracosm.pid))"
-    ok "Log file: paracosm.log"
-    ok "Stop with: kill \$(cat paracosm.pid)"
+    nohup pnpm --filter @paracosm/api start > paracosm-api.log 2>&1 &
+    echo $! > paracosm-api.pid
+    ok "API server started in background (PID: $(cat paracosm-api.pid))"
+    sleep 2
+    nohup pnpm --filter @paracosm/web start > paracosm-web.log 2>&1 &
+    echo $! > paracosm-web.pid
+    ok "Web server started in background (PID: $(cat paracosm-web.pid))"
+    ok "Log files: paracosm-api.log, paracosm-web.log"
+    ok "Stop with: kill \$(cat paracosm-api.pid) \$(cat paracosm-web.pid)"
   else
-    exec pnpm start
+    pnpm --filter @paracosm/api start &
+    API_PID=$!
+    ok "API server started (PID: ${API_PID})"
+    sleep 2
+    info "Starting ${PROJECT_NAME} Web server on port ${DEFAULT_PORT}..."
+    pnpm --filter @paracosm/web start
+    kill $API_PID 2>/dev/null
   fi
 }
 

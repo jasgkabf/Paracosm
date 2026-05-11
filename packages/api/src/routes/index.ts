@@ -32,20 +32,20 @@ export function registerRoutes(fastify: FastifyInstance, wsManager: WebSocketMan
     }));
   });
 
-  registerChatRoutes(fastify, agentEngine);
-  registerWorldModelRoutes(fastify);
-  registerSimulationRoutes(fastify);
-  registerStrategyRoutes(fastify);
-  registerToolRoutes(fastify);
-  registerLLMConfigRoutes(fastify, agentEngine);
-  registerPersonaRoutes(fastify);
-  registerUserRoutes(fastify);
-  registerHeartbeatRoutes(fastify);
-  registerCustomLLMRoutes(fastify);
+  fastify.register(async (apiV1) => {
+    registerChatRoutes(apiV1, agentEngine);
+    registerWorldModelRoutes(apiV1);
+    registerSimulationRoutes(apiV1);
+    registerStrategyRoutes(apiV1);
+    registerToolRoutes(apiV1);
+    registerLLMConfigRoutes(apiV1, agentEngine);
+    registerPersonaRoutes(apiV1);
+    registerUserRoutes(apiV1);
+    registerHeartbeatRoutes(apiV1);
+    registerCustomLLMRoutes(apiV1);
 
-  fastify.register(async (instance) => {
-    instance.get('/ws', { websocket: true }, (socket, _request) => {
+    apiV1.get('/ws', { websocket: true }, (socket, _request) => {
       wsManager.handleConnection(socket);
     });
-  });
+  }, { prefix: '/api/v1' });
 }
