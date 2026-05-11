@@ -55,6 +55,12 @@ check_pnpm() {
   fi
 }
 
+clean_build_cache() {
+  info "Cleaning build cache..."
+  rm -rf packages/*/dist packages/*/.tsbuildinfo .turbo packages/web/.next 2>/dev/null || true
+  ok "Build cache cleaned"
+}
+
 install_deps() {
   info "Installing dependencies..."
   pnpm install --frozen-lockfile 2>/dev/null || pnpm install
@@ -112,11 +118,12 @@ main() {
   echo " |  __/ (_| | | | (_| | (__| ||  __/ |   "
   echo " |_|   \__,_|_|  \__,_|\___|\__\___|_|   "
   echo -e "${NC}"
-  echo -e "  Quick Start Script v1.0"
+  echo -e "  Quick Start Script v1.1"
   echo ""
 
   check_node || exit 1
   check_pnpm || exit 1
+  clean_build_cache
   install_deps
   build_project
   create_env
