@@ -1,4 +1,4 @@
-import type { LLMRequest, LLMResponse, LLMStreamChunk } from '@paracosm/shared';
+import type { LLMRequest, LLMResponse, LLMStreamChunk, ProviderConfig } from '@paracosm/shared';
 import { BaseProvider, type ProviderCapabilities, type ProviderRequestOptions } from './base-provider.js';
 
 export class CustomOpenAIProvider extends BaseProvider {

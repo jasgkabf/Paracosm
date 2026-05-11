@@ -19,7 +19,7 @@ export function registerStrategyCommand(program: Command): void {
         }
 
         const data = await res.json();
-        const strategies: Array<{ id: string; name: string; fitness: number; generation: number; status: string }> = data.data ?? data ?? [];
+        const strategies: Array<{ id: string; name: string; fitness: number; generation: number; status: string }> = (data as any).data ?? data ?? [];
 
         if (strategies.length === 0) {
           output.info('No strategies found');

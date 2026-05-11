@@ -1,4 +1,4 @@
-import type { LLMConfig, ProviderConfig, RoutingRule, BudgetConfig, FallbackConfig } from '@paracosm/shared';
+import type { LLMConfig, LLMProvider, ProviderConfig, RoutingRule, BudgetConfig, FallbackConfig } from '@paracosm/shared';
 import { ConfigDefaults } from './config-defaults.js';
 import { ConfigEncryption } from './config-encryption.js';
 import { ConfigMigrator } from './config-migrator.js';
@@ -63,7 +63,7 @@ export class ConfigManager {
       const migrated = manager.migrator.migrate(parsed);
       let decrypted = migrated;
 
-      if (migrated.encryption?.enabled && encryptionKey) {
+      if ((migrated as any).encryption?.enabled && encryptionKey) {
         decrypted = manager.encryption.decryptConfig(migrated, encryptionKey);
       }
 
@@ -89,7 +89,7 @@ export class ConfigManager {
     let dataToSave = { ...this.config };
 
     if (encryptionKey) {
-      dataToSave = this.encryption.encryptConfig(dataToSave, encryptionKey);
+      dataToSave = this.encryption.encryptConfig(dataToSave, encryptionKey) as unknown as ConfigFile;
       dataToSave.encryption = { enabled: true, algorithm: 'aes-256-gcm' };
     }
 
@@ -180,7 +180,7 @@ export class ConfigManager {
     this.config.providers[index] = {
       ...this.config.providers[index],
       ...updates,
-      provider: providerName,
+      provider: providerName as LLMProvider,
     };
     this.notifyChange();
   }

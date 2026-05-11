@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "@paracosm/llm-gateway",
   "version": "0.1.0",
   "description": "LLM gateway with smart routing, provider management, and fallback handling",

@@ -21,7 +21,7 @@ export function registerToolCommand(program: Command): void {
         }
 
         const data = await res.json();
-        let tools: Array<{ name: string; type: string; description?: string }> = data.data ?? data ?? [];
+        let tools: Array<{ name: string; type: string; description?: string }> = (data as any).data ?? data ?? [];
 
         if (options.builtin) {
           tools = tools.filter((t) => t.type === 'builtin');

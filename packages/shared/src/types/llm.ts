@@ -4,6 +4,11 @@ export type LLMProvider =
   | 'google'
   | 'mistral'
   | 'cohere'
+  | 'deepseek'
+  | 'moonshot'
+  | 'ollama'
+  | 'lmstudio'
+  | 'vllm'
   | 'local'
   | 'custom';
 

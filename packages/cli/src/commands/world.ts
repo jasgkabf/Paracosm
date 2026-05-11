@@ -25,8 +25,8 @@ export function registerWorldCommand(program: Command): void {
           output.print(JSON.stringify(data, null, 2));
         } else {
           output.print(chalk.bold('World Model Summary:'));
-          const entities = data.entities ?? [];
-          const relations = data.relations ?? [];
+          const entities = (data as any).entities ?? [];
+          const relations = (data as any).relations ?? [];
           output.print(`  Entities: ${chalk.cyan(entities.length.toString())}`);
           output.print(`  Relations: ${chalk.cyan(relations.length.toString())}`);
           if (entities.length > 0) {
@@ -54,7 +54,7 @@ export function registerWorldCommand(program: Command): void {
         }
 
         const data = await res.json();
-        const entities: Array<{ id: string; name: string; type: string }> = data.entities ?? [];
+        const entities: Array<{ id: string; name: string; type: string }> = (data as any).entities ?? [];
 
         if (entities.length === 0) {
           output.info('No entities found');
@@ -83,7 +83,7 @@ export function registerWorldCommand(program: Command): void {
         }
 
         const data = await res.json();
-        const events: Array<{ name: string; timestamp: string; type: string }> = data.timeline ?? [];
+        const events: Array<{ name: string; timestamp: string; type: string }> = (data as any).timeline ?? [];
 
         if (events.length === 0) {
           output.info('No timeline events found');

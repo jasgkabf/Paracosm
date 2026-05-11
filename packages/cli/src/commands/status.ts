@@ -45,7 +45,7 @@ export function registerStatusCommand(program: Command): void {
 
         const data = await res.json();
         const providers: Array<{ provider: string; available: boolean; latencyMs: number; errorRate: number }> =
-          data.providerStatuses ?? [];
+          (data as any).providerStatuses ?? [];
 
         if (providers.length === 0) {
           output.info('No providers configured');

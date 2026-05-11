@@ -199,7 +199,7 @@ export class RateLimiter implements Middleware {
     });
   }
 
-  tokenBucket(config: { maxTokens: number; refillRatePerSecond: number }): void {
+  configureTokenBucket(config: { maxTokens: number; refillRatePerSecond: number }): void {
     this.tokenBucket = {
       tokens: config.maxTokens,
       maxTokens: config.maxTokens,
@@ -208,7 +208,7 @@ export class RateLimiter implements Middleware {
     };
   }
 
-  slidingWindow(config: { maxRequests: number; windowMs: number }): void {
+  configureSlidingWindow(config: { maxRequests: number; windowMs: number }): void {
     this.config.maxRequests = config.maxRequests;
     this.config.windowMs = config.windowMs;
   }

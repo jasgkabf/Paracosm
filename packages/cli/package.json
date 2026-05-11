@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "@paracosm/cli",
   "version": "0.1.0",
   "description": "Paracosm CLI - command-line interface for multi-agent AI orchestration",

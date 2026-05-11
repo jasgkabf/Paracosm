@@ -77,7 +77,7 @@ export function InteractiveChat({
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.message ?? data.content ?? 'No response' },
+        { role: 'assistant', content: (data as any).message ?? (data as any).content ?? 'No response' },
       ]);
     } catch {
       setMessages((prev) => [

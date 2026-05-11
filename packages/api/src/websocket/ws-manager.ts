@@ -3,6 +3,7 @@ import type { WSEvent } from './ws-events.js';
 import { WSEventBus } from './ws-events.js';
 import { WSHandler } from './ws-handler.js';
 import { WSAuth } from './ws-auth.js';
+import type { WebSocket } from '@fastify/websocket';
 
 const logger = createLogger('WebSocketManager');
 

@@ -62,13 +62,13 @@ export function StatusDashboard({ heartbeatOnly = false }: StatusDashboardProps)
         if (res.ok) {
           const d = await res.json();
           setData({
-            bpm: d.vitalSigns?.bpm ?? 72,
-            rhythm: d.vitalSigns?.rhythm ?? 'normal',
-            phase: d.engineStatus?.phase ?? 'rest',
-            cpuUsage: d.systemMetrics?.cpuUsage ?? 0,
-            memoryUsage: d.systemMetrics?.memoryUsage ?? 0,
-            uptime: d.systemMetrics?.uptime ?? 0,
-            providers: d.providerStatuses ?? [],
+            bpm: (d as any).vitalSigns?.bpm ?? 72,
+            rhythm: (d as any).vitalSigns?.rhythm ?? 'normal',
+            phase: (d as any).engineStatus?.phase ?? 'rest',
+            cpuUsage: (d as any).systemMetrics?.cpuUsage ?? 0,
+            memoryUsage: (d as any).systemMetrics?.memoryUsage ?? 0,
+            uptime: (d as any).systemMetrics?.uptime ?? 0,
+            providers: (d as any).providerStatuses ?? [],
           });
           setConnected(true);
         } else {

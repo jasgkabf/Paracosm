@@ -20,7 +20,7 @@ export function registerModelCommand(program: Command): void {
         }
 
         const data = await res.json();
-        const providers: Array<{ provider: string; models: string[] }> = data.providers ?? [];
+        const providers: Array<{ provider: string; models: string[] }> = (data as any).providers ?? [];
 
         output.print(chalk.bold('Available Models:'));
 
@@ -83,7 +83,7 @@ export function registerModelCommand(program: Command): void {
 
         const data = await res.json();
         output.success('Model responded:');
-        output.print(data.message ?? data.content ?? 'No response');
+        output.print((data as any).message ?? (data as any).content ?? 'No response');
       } catch (err) {
         output.error(`Test failed: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);

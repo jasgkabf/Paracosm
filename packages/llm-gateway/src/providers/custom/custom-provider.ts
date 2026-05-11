@@ -1,4 +1,4 @@
-import type { LLMRequest, LLMResponse, LLMStreamChunk, CustomProviderConfig } from '@paracosm/shared';
+import type { LLMRequest, LLMResponse, LLMStreamChunk, CustomProviderConfig, ProviderConfig } from '@paracosm/shared';
 import { BaseProvider, type ProviderCapabilities, type ProviderRequestOptions } from '../base-provider.js';
 import { RequestMapper } from './request-mapper.js';
 import { ResponseMapper } from './response-mapper.js';
@@ -29,7 +29,7 @@ export class CustomProvider extends BaseProvider {
     };
   }
 
-  constructor(config: CustomProviderConfig, providerConfig?: Parameters<typeof BaseProvider>[0]) {
+  constructor(config: CustomProviderConfig, providerConfig?: ProviderConfig) {
     super(providerConfig || {
       provider: 'custom' as const,
       apiKey: config.apiKey ?? '',

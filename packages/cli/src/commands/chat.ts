@@ -53,7 +53,7 @@ export function registerChatCommand(program: Command): void {
         }
 
         const data = await res.json();
-        output.print(chalk.green(data.message ?? data.content ?? 'No response'));
+        output.print(chalk.green((data as any).message ?? (data as any).content ?? 'No response'));
       } catch (err) {
         output.error(`Failed: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);

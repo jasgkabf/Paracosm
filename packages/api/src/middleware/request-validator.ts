@@ -4,7 +4,6 @@ import { createLogger } from '@paracosm/shared';
 const logger = createLogger('RequestValidator');
 
 interface ValidationRule {
-  field: string;
   type: 'string' | 'number' | 'boolean' | 'object' | 'array';
   required: boolean;
   minLength?: number;

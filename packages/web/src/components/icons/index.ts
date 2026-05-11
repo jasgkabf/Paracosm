@@ -29,3 +29,4 @@ export { IconMoon } from './icon-moon';
 export { IconSun } from './icon-sun';
 export { IconCustomLlm } from './icon-custom-llm';
 export { IconParacosm } from './icon-paracosm';
+export { IconPlay } from './icon-play';
