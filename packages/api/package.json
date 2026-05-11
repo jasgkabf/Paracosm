@@ -1,0 +1,44 @@
+{
+  "name": "@paracosm/api",
+  "version": "0.1.0",
+  "description": "REST + WebSocket API layer for the Paracosm agent project",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/rate-limit": "^9.1.0",
+    "@fastify/static": "^7.0.4",
+    "@fastify/websocket": "^10.0.1",
+    "@paracosm/core": "workspace:*",
+    "@paracosm/llm-gateway": "workspace:*",
+    "@paracosm/shared": "workspace:*",
+    "fastify": "^4.28.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.40",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.5.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}

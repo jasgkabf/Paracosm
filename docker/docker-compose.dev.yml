@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  paracosm:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: deps
+    container_name: paracosm-dev
+    restart: unless-stopped
+    ports:
+      - "7529:7529"
+    volumes:
+      - ../packages:/app/packages
+      - ../package.json:/app/package.json
+      - ../tsconfig.base.json:/app/tsconfig.base.json
+    environment:
+      - NODE_ENV=development
+      - PORT=7529
+    command: ["pnpm", "run", "dev"]

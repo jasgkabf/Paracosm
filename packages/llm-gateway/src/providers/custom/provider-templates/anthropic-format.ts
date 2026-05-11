@@ -1,0 +1,80 @@
+import type { ProviderTemplateInternal } from "../types.js";
+
+export function createAnthropicFormatTemplate(baseUrl: string, apiKey: string): ProviderTemplateInternal {
+  return {
+    id: "anthropic-format",
+    name: "Anthropic Format",
+    description: "Anthropic API format template",
+    provider: "custom",
+    version: "1.0.0",
+    author: "paracosm",
+    defaultConfig: {
+      providerId: "anthropic-format",
+      name: "Anthropic Format",
+      description: "Anthropic API format provider",
+      baseUrl,
+      authentication: {
+        type: "api_key",
+        headerName: "x-api-key",
+        tokenTemplate: apiKey,
+      },
+      requestMapping: {
+        endpoint: `${baseUrl}/messages`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "anthropic-version": "2023-06-01",
+        },
+        bodyTemplate: {
+          model: "",
+          max_tokens: 4096,
+          messages: [],
+          temperature: 0.7,
+          stream: false,
+        },
+        messagePath: "messages",
+        modelPath: "model",
+        temperaturePath: "temperature",
+        maxTokensPath: "max_tokens",
+        streamPathParam: "stream",
+        customPaths: {
+          system: { path: "system", defaultValue: null, required: false, transform: null },
+        },
+      },
+      responseMapping: {
+        contentPath: "content.0.text",
+        usagePath: "usage",
+        promptTokensPath: "input_tokens",
+        completionTokensPath: "output_tokens",
+        totalTokensPath: null,
+        finishReasonPath: "stop_reason",
+        functionCallPath: null,
+        functionCallNamePath: null,
+        functionCallArgumentsPath: null,
+        errorPath: "error",
+        errorMessagePath: "error.message",
+        errorCodePath: "error.type",
+        customPaths: {},
+      },
+      streamConfig: {
+        enabled: true,
+        streamEndpoint: null,
+        streamFormat: "sse",
+        chunkContentPath: "delta.text",
+        chunkFinishPath: null,
+        chunkUsagePath: null,
+        delimiter: "\n",
+        heartbeatIntervalMs: 15000,
+      },
+      healthCheckEndpoint: null,
+      rateLimitRpm: 400,
+      timeoutMs: 60000,
+    },
+    capabilities: [
+      { name: "chat", supported: true, details: {}, limitations: [] },
+      { name: "streaming", supported: true, details: {}, limitations: [] },
+      { name: "tool_use", supported: true, details: {}, limitations: [] },
+      { name: "vision", supported: true, details: {}, limitations: [] },
+    ],
+  };
+}

@@ -1,0 +1,77 @@
+import type { ProviderTemplateInternal } from "../types.js";
+
+export function createOllamaLocalTemplate(baseUrl: string): ProviderTemplateInternal {
+  return {
+    id: "ollama-local",
+    name: "Ollama Local",
+    description: "Ollama local API template",
+    provider: "custom",
+    version: "1.0.0",
+    author: "paracosm",
+    defaultConfig: {
+      providerId: "ollama-local",
+      name: "Ollama Local",
+      description: "Ollama local API provider",
+      baseUrl: baseUrl || "http://localhost:11434",
+      authentication: {
+        type: "custom",
+        headerName: "",
+        tokenTemplate: "",
+      },
+      requestMapping: {
+        endpoint: `${baseUrl || "http://localhost:11434"}/api/chat`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        bodyTemplate: {
+          model: "",
+          messages: [],
+          stream: false,
+          options: {
+            temperature: 0.7,
+            num_predict: 4096,
+          },
+        },
+        messagePath: "messages",
+        modelPath: "model",
+        temperaturePath: "options.temperature",
+        maxTokensPath: "options.num_predict",
+        streamPathParam: "stream",
+        customPaths: {},
+      },
+      responseMapping: {
+        contentPath: "message.content",
+        usagePath: null,
+        promptTokensPath: "prompt_eval_count",
+        completionTokensPath: "eval_count",
+        totalTokensPath: null,
+        finishReasonPath: null,
+        functionCallPath: null,
+        functionCallNamePath: null,
+        functionCallArgumentsPath: null,
+        errorPath: "error",
+        errorMessagePath: "error",
+        errorCodePath: null,
+        customPaths: {},
+      },
+      streamConfig: {
+        enabled: true,
+        streamEndpoint: null,
+        streamFormat: "ndjson",
+        chunkContentPath: "message.content",
+        chunkFinishPath: "done",
+        chunkUsagePath: null,
+        delimiter: "\n",
+        heartbeatIntervalMs: 30000,
+      },
+      healthCheckEndpoint: "/api/tags",
+      rateLimitRpm: 1000,
+      timeoutMs: 120000,
+    },
+    capabilities: [
+      { name: "chat", supported: true, details: {}, limitations: [] },
+      { name: "streaming", supported: true, details: {}, limitations: [] },
+      { name: "embeddings", supported: true, details: {}, limitations: [] },
+      { name: "function_calling", supported: false, details: {}, limitations: ["Not natively supported"] },
+    ],
+  };
+}

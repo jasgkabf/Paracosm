@@ -1,0 +1,15 @@
+export { SmartRouter } from "./smart-router.js";
+export type { RoutingContext, RoutingDecision } from "./smart-router.js";
+export { TaskClassifier } from "./task-classifier.js";
+export type { TaskFeatures } from "./task-classifier.js";
+export { CostOptimizer } from "./cost-optimizer.js";
+export type { CostEstimate, ValueScore } from "./cost-optimizer.js";
+export { LoadBalancer } from "./load-balancer.js";
+export type { LoadBalanceStrategy } from "./load-balancer.js";
+export { LatencyOptimizer } from "./latency-optimizer.js";
+export { RoutingRules } from "./routing-rules.js";
+export { RoutingAnalytics } from "./routing-analytics.js";
+export { ModelSelector } from "./model-selector.js";
+export type { ModelFilter, ModelComparison } from "./model-selector.js";
+export { ContextFitter } from "./context-fitter.js";
+export { TokenEstimator } from "./token-estimator.js";

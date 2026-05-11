@@ -1,0 +1,72 @@
+import type { ProviderTemplateInternal } from "../types.js";
+
+export function createRawHttpTemplate(baseUrl: string, apiKey: string): ProviderTemplateInternal {
+  return {
+    id: "raw-http",
+    name: "Raw HTTP",
+    description: "Raw HTTP API template with minimal assumptions",
+    provider: "custom",
+    version: "1.0.0",
+    author: "paracosm",
+    defaultConfig: {
+      providerId: "raw-http",
+      name: "Raw HTTP",
+      description: "Raw HTTP API provider",
+      baseUrl,
+      authentication: {
+        type: "bearer",
+        headerName: "Authorization",
+        tokenTemplate: apiKey,
+      },
+      requestMapping: {
+        endpoint: `${baseUrl}/generate`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        bodyTemplate: {
+          prompt: "",
+          max_tokens: 4096,
+          temperature: 0.7,
+        },
+        messagePath: "prompt",
+        modelPath: "model",
+        temperaturePath: "temperature",
+        maxTokensPath: "max_tokens",
+        streamPathParam: "stream",
+        customPaths: {},
+      },
+      responseMapping: {
+        contentPath: "text",
+        usagePath: "usage",
+        promptTokensPath: "prompt_tokens",
+        completionTokensPath: "completion_tokens",
+        totalTokensPath: "total_tokens",
+        finishReasonPath: "finish_reason",
+        functionCallPath: null,
+        functionCallNamePath: null,
+        functionCallArgumentsPath: null,
+        errorPath: "error",
+        errorMessagePath: "error",
+        errorCodePath: "code",
+        customPaths: {},
+      },
+      streamConfig: {
+        enabled: false,
+        streamEndpoint: null,
+        streamFormat: "sse",
+        chunkContentPath: "text",
+        chunkFinishPath: "done",
+        chunkUsagePath: null,
+        delimiter: "\n",
+        heartbeatIntervalMs: 15000,
+      },
+      healthCheckEndpoint: "/health",
+      rateLimitRpm: 100,
+      timeoutMs: 60000,
+    },
+    capabilities: [
+      { name: "chat", supported: true, details: {}, limitations: ["No message format, uses raw prompt"] },
+      { name: "streaming", supported: false, details: {}, limitations: [] },
+      { name: "function_calling", supported: false, details: {}, limitations: [] },
+    ],
+  };
+}

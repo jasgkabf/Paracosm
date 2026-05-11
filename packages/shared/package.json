@@ -1,0 +1,88 @@
+{
+  "name": "@paracosm/shared",
+  "version": "0.1.0",
+  "description": "Shared types and utilities for the Paracosm agent project",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./types/common": {
+      "types": "./dist/types/common.d.ts",
+      "default": "./dist/types/common.js"
+    },
+    "./types/world-model": {
+      "types": "./dist/types/world-model.d.ts",
+      "default": "./dist/types/world-model.js"
+    },
+    "./types/persona": {
+      "types": "./dist/types/persona.d.ts",
+      "default": "./dist/types/persona.js"
+    },
+    "./types/simulation": {
+      "types": "./dist/types/simulation.d.ts",
+      "default": "./dist/types/simulation.js"
+    },
+    "./types/strategy": {
+      "types": "./dist/types/strategy.d.ts",
+      "default": "./dist/types/strategy.js"
+    },
+    "./types/orchestrator": {
+      "types": "./dist/types/orchestrator.d.ts",
+      "default": "./dist/types/orchestrator.js"
+    },
+    "./types/llm": {
+      "types": "./dist/types/llm.d.ts",
+      "default": "./dist/types/llm.js"
+    },
+    "./types/tool": {
+      "types": "./dist/types/tool.d.ts",
+      "default": "./dist/types/tool.js"
+    },
+    "./types/memory": {
+      "types": "./dist/types/memory.d.ts",
+      "default": "./dist/types/memory.js"
+    },
+    "./types/api": {
+      "types": "./dist/types/api.d.ts",
+      "default": "./dist/types/api.js"
+    },
+    "./types/user": {
+      "types": "./dist/types/user.d.ts",
+      "default": "./dist/types/user.js"
+    },
+    "./types/heartbeat": {
+      "types": "./dist/types/heartbeat.d.ts",
+      "default": "./dist/types/heartbeat.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.40",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.5.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}
