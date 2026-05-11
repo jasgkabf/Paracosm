@@ -1,31 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PIPELINE_BACKOFF_MULTIPLIER = exports.PIPELINE_RETRY_DELAY_MS = exports.PIPELINE_MAX_RETRIES = exports.EVENT_BUS_HISTORY_SIZE = exports.EVENT_BUS_MAX_LISTENERS = exports.DEFAULT_CSE_PHASES = exports.DEFAULT_MAX_ITERATIONS = exports.MAX_ITERATIONS = exports.TOKEN_BUDGET_CRITICAL_THRESHOLD = exports.TOKEN_BUDGET_WARNING_THRESHOLD = exports.DEFAULT_TOKEN_BUDGET = exports.MAX_TOKEN_BUDGET = exports.SESSION_IDLE_TIMEOUT_MS = exports.MAX_SESSION_DURATION_MS = exports.MAX_CONCURRENT_SESSIONS = exports.DEFAULT_API_PREFIX = exports.DEFAULT_HOST = exports.DEFAULT_PORT = exports.APP_DESCRIPTION = exports.APP_VERSION = exports.APP_NAME = void 0;
-exports.APP_NAME = 'Paracosm';
-exports.APP_VERSION = '0.1.0';
-exports.APP_DESCRIPTION = 'Multi-agent AI orchestration framework';
-exports.DEFAULT_PORT = 3000;
-exports.DEFAULT_HOST = '0.0.0.0';
-exports.DEFAULT_API_PREFIX = '/api/v1';
-exports.MAX_CONCURRENT_SESSIONS = 100;
-exports.MAX_SESSION_DURATION_MS = 3600000;
-exports.SESSION_IDLE_TIMEOUT_MS = 1800000;
-exports.MAX_TOKEN_BUDGET = 1000000;
-exports.DEFAULT_TOKEN_BUDGET = 100000;
-exports.TOKEN_BUDGET_WARNING_THRESHOLD = 0.8;
-exports.TOKEN_BUDGET_CRITICAL_THRESHOLD = 0.95;
-exports.MAX_ITERATIONS = 50;
-exports.DEFAULT_MAX_ITERATIONS = 10;
-exports.DEFAULT_CSE_PHASES = [
+export const APP_NAME = 'Paracosm';
+export const APP_VERSION = '0.1.0';
+export const APP_DESCRIPTION = 'Multi-agent AI orchestration framework';
+export const DEFAULT_PORT = 3000;
+export const DEFAULT_HOST = '0.0.0.0';
+export const DEFAULT_API_PREFIX = '/api/v1';
+export const MAX_CONCURRENT_SESSIONS = 100;
+export const MAX_SESSION_DURATION_MS = 3600000;
+export const SESSION_IDLE_TIMEOUT_MS = 1800000;
+export const MAX_TOKEN_BUDGET = 1000000;
+export const DEFAULT_TOKEN_BUDGET = 100000;
+export const TOKEN_BUDGET_WARNING_THRESHOLD = 0.8;
+export const TOKEN_BUDGET_CRITICAL_THRESHOLD = 0.95;
+export const MAX_ITERATIONS = 50;
+export const DEFAULT_MAX_ITERATIONS = 10;
+export const DEFAULT_CSE_PHASES = [
     'CONSTRUCT',
     'SIMULATE',
     'EXECUTE',
     'REFLECT',
     'EVOLVE',
 ];
-exports.EVENT_BUS_MAX_LISTENERS = 100;
-exports.EVENT_BUS_HISTORY_SIZE = 1000;
-exports.PIPELINE_MAX_RETRIES = 3;
-exports.PIPELINE_RETRY_DELAY_MS = 1000;
-exports.PIPELINE_BACKOFF_MULTIPLIER = 2;
+export const EVENT_BUS_MAX_LISTENERS = 100;
+export const EVENT_BUS_HISTORY_SIZE = 1000;
+export const PIPELINE_MAX_RETRIES = 3;
+export const PIPELINE_RETRY_DELAY_MS = 1000;
+export const PIPELINE_BACKOFF_MULTIPLIER = 2;
 //# sourceMappingURL=app.js.map

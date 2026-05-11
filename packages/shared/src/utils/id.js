@@ -1,17 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateId = generateId;
-exports.generateUUID = generateUUID;
-exports.generateShortId = generateShortId;
-exports.generateEntityId = generateEntityId;
-const uuid_1 = require("uuid");
-function generateId() {
-    return (0, uuid_1.v4)();
+import { v4 as uuidv4 } from 'uuid';
+export function generateId() {
+    return uuidv4();
 }
-function generateUUID() {
-    return (0, uuid_1.v4)();
+export function generateUUID() {
+    return uuidv4();
 }
-function generateShortId(length = 8) {
+export function generateShortId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
@@ -19,7 +13,7 @@ function generateShortId(length = 8) {
     }
     return result;
 }
-function generateEntityId(prefix) {
+export function generateEntityId(prefix) {
     return `${prefix}_${generateShortId(12)}`;
 }
 //# sourceMappingURL=id.js.map

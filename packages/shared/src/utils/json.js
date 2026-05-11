@@ -1,13 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.safeParse = safeParse;
-exports.safeStringify = safeStringify;
-exports.deepClone = deepClone;
-exports.merge = merge;
-exports.deepMerge = deepMerge;
-exports.pick = pick;
-exports.omit = omit;
-function safeParse(json, fallback) {
+export function safeParse(json, fallback) {
     try {
         return JSON.parse(json);
     }
@@ -15,7 +6,7 @@ function safeParse(json, fallback) {
         return fallback;
     }
 }
-function safeStringify(value, replacer, space) {
+export function safeStringify(value, replacer, space) {
     try {
         return JSON.stringify(value, replacer, space);
     }
@@ -23,13 +14,13 @@ function safeStringify(value, replacer, space) {
         return '{}';
     }
 }
-function deepClone(value) {
+export function deepClone(value) {
     if (value === null || typeof value !== 'object') {
         return value;
     }
     return JSON.parse(JSON.stringify(value));
 }
-function merge(target, ...sources) {
+export function merge(target, ...sources) {
     const result = { ...target };
     for (const source of sources) {
         for (const key of Object.keys(source)) {
@@ -40,7 +31,7 @@ function merge(target, ...sources) {
     }
     return result;
 }
-function deepMerge(target, source) {
+export function deepMerge(target, source) {
     const result = { ...target };
     for (const key of Object.keys(source)) {
         if (typeof source[key] === 'object' &&
@@ -57,7 +48,7 @@ function deepMerge(target, source) {
     }
     return result;
 }
-function pick(obj, keys) {
+export function pick(obj, keys) {
     const result = {};
     for (const key of keys) {
         if (key in obj) {
@@ -66,7 +57,7 @@ function pick(obj, keys) {
     }
     return result;
 }
-function omit(obj, keys) {
+export function omit(obj, keys) {
     const result = { ...obj };
     for (const key of keys) {
         delete result[key];

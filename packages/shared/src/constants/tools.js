@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PLUGIN_DEFAULTS = exports.MCP_DEFAULTS = exports.SANDBOX_DEFAULTS = exports.TOOL_PERMISSION_LEVELS = exports.DEFAULT_TOOL_CONFIG = exports.TOOL_SYSTEM_INFO = exports.TOOL_SHELL_EXECUTOR = exports.TOOL_DATA_PROCESSOR = exports.TOOL_API_CALLER = exports.TOOL_CODE_EXECUTOR = exports.TOOL_FILE_OPERATIONS = exports.TOOL_WEB_SEARCH = void 0;
-exports.TOOL_WEB_SEARCH = 'web_search';
-exports.TOOL_FILE_OPERATIONS = 'file_operations';
-exports.TOOL_CODE_EXECUTOR = 'code_executor';
-exports.TOOL_API_CALLER = 'api_caller';
-exports.TOOL_DATA_PROCESSOR = 'data_processor';
-exports.TOOL_SHELL_EXECUTOR = 'shell_executor';
-exports.TOOL_SYSTEM_INFO = 'system_info';
-exports.DEFAULT_TOOL_CONFIG = {
+export const TOOL_WEB_SEARCH = 'web_search';
+export const TOOL_FILE_OPERATIONS = 'file_operations';
+export const TOOL_CODE_EXECUTOR = 'code_executor';
+export const TOOL_API_CALLER = 'api_caller';
+export const TOOL_DATA_PROCESSOR = 'data_processor';
+export const TOOL_SHELL_EXECUTOR = 'shell_executor';
+export const TOOL_SYSTEM_INFO = 'system_info';
+export const DEFAULT_TOOL_CONFIG = {
     timeout: 30000,
     retries: 2,
     maxConcurrentCalls: 5,
@@ -18,14 +15,14 @@ exports.DEFAULT_TOOL_CONFIG = {
     parameters: {},
     environment: {},
 };
-exports.TOOL_PERMISSION_LEVELS = {
+export const TOOL_PERMISSION_LEVELS = {
     NONE: 0,
     READ: 1,
     WRITE: 2,
     EXECUTE: 3,
     ADMIN: 4,
 };
-exports.SANDBOX_DEFAULTS = {
+export const SANDBOX_DEFAULTS = {
     maxMemoryMB: 512,
     maxCpuTimeMs: 30000,
     maxFileSizeKB: 10240,
@@ -35,7 +32,7 @@ exports.SANDBOX_DEFAULTS = {
     networkAccess: false,
     filesystemAccess: 'readonly',
 };
-exports.MCP_DEFAULTS = {
+export const MCP_DEFAULTS = {
     protocol: 'stdio',
     reconnect: true,
     reconnectInterval: 5000,
@@ -43,7 +40,7 @@ exports.MCP_DEFAULTS = {
     requestTimeout: 30000,
     capabilities: [],
 };
-exports.PLUGIN_DEFAULTS = {
+export const PLUGIN_DEFAULTS = {
     maxPlugins: 50,
     verifySignature: true,
     sandboxExecution: true,

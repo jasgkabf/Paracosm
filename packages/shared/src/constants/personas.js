@@ -1,18 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PERSONA_SYNERGY_WEIGHTS = exports.DEBATE_MAX_PARTICIPANTS = exports.DEBATE_MIN_PARTICIPANTS = exports.DEBATE_CONSENSUS_THRESHOLD = exports.DEBATE_MAX_ROUNDS = exports.DEFAULT_PERSONA_CONFIGS = exports.PERSONA_ANALYST = exports.PERSONA_INNOVATOR = exports.PERSONA_GUARDIAN = exports.PERSONA_SYNTHESIZER = exports.PERSONA_OPTIMIZER = exports.PERSONA_EXPLORER = exports.PERSONA_CURATOR = exports.PERSONA_DREAMER = exports.PERSONA_CRITIC = exports.PERSONA_EXECUTOR = exports.PERSONA_ARCHITECT = void 0;
-exports.PERSONA_ARCHITECT = 'architect';
-exports.PERSONA_EXECUTOR = 'executor';
-exports.PERSONA_CRITIC = 'critic';
-exports.PERSONA_DREAMER = 'dreamer';
-exports.PERSONA_CURATOR = 'curator';
-exports.PERSONA_EXPLORER = 'explorer';
-exports.PERSONA_OPTIMIZER = 'optimizer';
-exports.PERSONA_SYNTHESIZER = 'synthesizer';
-exports.PERSONA_GUARDIAN = 'guardian';
-exports.PERSONA_INNOVATOR = 'innovator';
-exports.PERSONA_ANALYST = 'analyst';
-exports.DEFAULT_PERSONA_CONFIGS = {
+export const PERSONA_ARCHITECT = 'architect';
+export const PERSONA_EXECUTOR = 'executor';
+export const PERSONA_CRITIC = 'critic';
+export const PERSONA_DREAMER = 'dreamer';
+export const PERSONA_CURATOR = 'curator';
+export const PERSONA_EXPLORER = 'explorer';
+export const PERSONA_OPTIMIZER = 'optimizer';
+export const PERSONA_SYNTHESIZER = 'synthesizer';
+export const PERSONA_GUARDIAN = 'guardian';
+export const PERSONA_INNOVATOR = 'innovator';
+export const PERSONA_ANALYST = 'analyst';
+export const DEFAULT_PERSONA_CONFIGS = {
     architect: {
         role: 'architect',
         name: 'Architect',
@@ -74,11 +71,11 @@ exports.DEFAULT_PERSONA_CONFIGS = {
         metadata: {},
     },
 };
-exports.DEBATE_MAX_ROUNDS = 5;
-exports.DEBATE_CONSENSUS_THRESHOLD = 0.75;
-exports.DEBATE_MIN_PARTICIPANTS = 2;
-exports.DEBATE_MAX_PARTICIPANTS = 8;
-exports.PERSONA_SYNERGY_WEIGHTS = {
+export const DEBATE_MAX_ROUNDS = 5;
+export const DEBATE_CONSENSUS_THRESHOLD = 0.75;
+export const DEBATE_MIN_PARTICIPANTS = 2;
+export const DEBATE_MAX_PARTICIPANTS = 8;
+export const PERSONA_SYNERGY_WEIGHTS = {
     complementary: 0.4,
     historicalPerformance: 0.3,
     diversity: 0.2,

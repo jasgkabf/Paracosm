@@ -1,8 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Logger = void 0;
-exports.formatLogEntry = formatLogEntry;
-exports.createLogger = createLogger;
 const LOG_LEVEL_PRIORITY = {
     debug: 0,
     info: 1,
@@ -10,14 +5,14 @@ const LOG_LEVEL_PRIORITY = {
     error: 3,
     fatal: 4,
 };
-function formatLogEntry(entry) {
+export function formatLogEntry(entry) {
     const timestamp = entry.timestamp;
     const level = entry.level.toUpperCase().padEnd(5);
     const context = entry.context ? `[${entry.context}]` : '';
     const data = entry.data ? ` ${JSON.stringify(entry.data)}` : '';
     return `${timestamp} ${level} ${context} ${entry.message}${data}`;
 }
-class Logger {
+export class Logger {
     minLevel;
     context;
     handlers;
@@ -82,8 +77,7 @@ class Logger {
         this.handlers.push(handler);
     }
 }
-exports.Logger = Logger;
-function createLogger(context, minLevel = 'info') {
+export function createLogger(context, minLevel = 'info') {
     return new Logger(minLevel, context);
 }
 //# sourceMappingURL=logger.js.map

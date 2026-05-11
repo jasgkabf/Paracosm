@@ -1,4 +1,4 @@
-export type LLMProvider = 'openai' | 'anthropic' | 'google' | 'mistral' | 'cohere' | 'local' | 'custom';
+export type LLMProvider = 'openai' | 'anthropic' | 'google' | 'mistral' | 'cohere' | 'deepseek' | 'moonshot' | 'ollama' | 'lmstudio' | 'vllm' | 'local' | 'custom';
 export type LLMModel = string;
 export interface LLMRequest {
     id: string;

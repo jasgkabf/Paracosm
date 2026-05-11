@@ -1,9 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MemoryError = exports.HeartbeatError = exports.SimulationError = exports.ToolError = exports.ConfigError = exports.LLMError = exports.ParacosmError = void 0;
-exports.errorHandler = errorHandler;
-exports.isRetryable = isRetryable;
-class ParacosmError extends Error {
+export class ParacosmError extends Error {
     code;
     retryable;
     details;
@@ -15,8 +10,7 @@ class ParacosmError extends Error {
         this.details = details;
     }
 }
-exports.ParacosmError = ParacosmError;
-class LLMError extends ParacosmError {
+export class LLMError extends ParacosmError {
     provider;
     model;
     constructor(message, provider, model, retryable = false, details) {
@@ -26,15 +20,13 @@ class LLMError extends ParacosmError {
         this.model = model;
     }
 }
-exports.LLMError = LLMError;
-class ConfigError extends ParacosmError {
+export class ConfigError extends ParacosmError {
     constructor(message, details) {
         super(message, 'CONFIG_ERROR', false, details);
         this.name = 'ConfigError';
     }
 }
-exports.ConfigError = ConfigError;
-class ToolError extends ParacosmError {
+export class ToolError extends ParacosmError {
     toolId;
     constructor(message, toolId, retryable = false, details) {
         super(message, 'TOOL_ERROR', retryable, details);
@@ -42,35 +34,31 @@ class ToolError extends ParacosmError {
         this.toolId = toolId;
     }
 }
-exports.ToolError = ToolError;
-class SimulationError extends ParacosmError {
+export class SimulationError extends ParacosmError {
     constructor(message, retryable = false, details) {
         super(message, 'SIMULATION_ERROR', retryable, details);
         this.name = 'SimulationError';
     }
 }
-exports.SimulationError = SimulationError;
-class HeartbeatError extends ParacosmError {
+export class HeartbeatError extends ParacosmError {
     constructor(message, retryable = false, details) {
         super(message, 'HEARTBEAT_ERROR', retryable, details);
         this.name = 'HeartbeatError';
     }
 }
-exports.HeartbeatError = HeartbeatError;
-class MemoryError extends ParacosmError {
+export class MemoryError extends ParacosmError {
     constructor(message, retryable = false, details) {
         super(message, 'MEMORY_ERROR', retryable, details);
         this.name = 'MemoryError';
     }
 }
-exports.MemoryError = MemoryError;
 const RETRYABLE_CODES = [
     'TIMEOUT',
     'RATE_LIMIT',
     'LLM_ERROR',
     'HEARTBEAT_ERROR',
 ];
-function errorHandler(error) {
+export function errorHandler(error) {
     if (error instanceof ParacosmError) {
         return error;
     }
@@ -82,7 +70,7 @@ function errorHandler(error) {
     }
     return new ParacosmError(String(error), 'UNKNOWN');
 }
-function isRetryable(error) {
+export function isRetryable(error) {
     if (error instanceof ParacosmError) {
         return error.retryable || RETRYABLE_CODES.includes(error.code);
     }

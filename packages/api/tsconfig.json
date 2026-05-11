@@ -8,10 +8,5 @@
     "sourceMap": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "*.tsbuildinfo"],
-  "references": [
-    { "path": "../shared" },
-    { "path": "../core" },
-    { "path": "../llm-gateway" }
-  ]
+  "exclude": ["node_modules", "dist", "*.tsbuildinfo"]
 }

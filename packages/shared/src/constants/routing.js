@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_ROUTING_RULES = exports.TASK_TYPES = exports.ROUTING_MANUAL = exports.ROUTING_ADAPTIVE = exports.ROUTING_QUALITY_OPTIMIZED = exports.ROUTING_COST_OPTIMIZED = exports.ROUTING_LEAST_LATENCY = exports.ROUTING_ROUND_ROBIN = void 0;
-exports.ROUTING_ROUND_ROBIN = 'round_robin';
-exports.ROUTING_LEAST_LATENCY = 'least_latency';
-exports.ROUTING_COST_OPTIMIZED = 'cost_optimized';
-exports.ROUTING_QUALITY_OPTIMIZED = 'quality_optimized';
-exports.ROUTING_ADAPTIVE = 'adaptive';
-exports.ROUTING_MANUAL = 'manual';
-exports.TASK_TYPES = {
+export const ROUTING_ROUND_ROBIN = 'round_robin';
+export const ROUTING_LEAST_LATENCY = 'least_latency';
+export const ROUTING_COST_OPTIMIZED = 'cost_optimized';
+export const ROUTING_QUALITY_OPTIMIZED = 'quality_optimized';
+export const ROUTING_ADAPTIVE = 'adaptive';
+export const ROUTING_MANUAL = 'manual';
+export const TASK_TYPES = {
     CODE_GENERATION: 'code_generation',
     CODE_REVIEW: 'code_review',
     ANALYSIS: 'analysis',
@@ -21,7 +18,7 @@ exports.TASK_TYPES = {
     EMBEDDING: 'embedding',
     CHAT: 'chat',
 };
-exports.DEFAULT_ROUTING_RULES = [
+export const DEFAULT_ROUTING_RULES = [
     {
         id: 'rule-code-gen',
         name: 'Code Generation',

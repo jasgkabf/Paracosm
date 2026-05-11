@@ -11,13 +11,7 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "composite": true,
-    "incremental": true,
-    "paths": {
-      "@paracosm/shared": ["./packages/shared/src"],
-      "@paracosm/shared/*": ["./packages/shared/src/*"]
-    }
+    "sourceMap": true
   },
   "exclude": ["node_modules", "dist", ".turbo"]
 }

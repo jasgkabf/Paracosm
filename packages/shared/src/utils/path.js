@@ -1,34 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getConfigDir = getConfigDir;
-exports.getDataDir = getDataDir;
-exports.getCacheDir = getCacheDir;
-exports.ensureDir = ensureDir;
-const os_1 = require("os");
-const path_1 = require("path");
-const fs_1 = require("fs");
+import { homedir } from 'os';
+import { join } from 'path';
+import { mkdirSync, existsSync } from 'fs';
 const APP_DIR = '.paracosm';
 function getBaseDir() {
-    return (0, os_1.homedir)();
+    return homedir();
 }
-function getConfigDir() {
-    const dir = (0, path_1.join)(getBaseDir(), APP_DIR, 'config');
+export function getConfigDir() {
+    const dir = join(getBaseDir(), APP_DIR, 'config');
     ensureDir(dir);
     return dir;
 }
-function getDataDir() {
-    const dir = (0, path_1.join)(getBaseDir(), APP_DIR, 'data');
+export function getDataDir() {
+    const dir = join(getBaseDir(), APP_DIR, 'data');
     ensureDir(dir);
     return dir;
 }
-function getCacheDir() {
-    const dir = (0, path_1.join)(getBaseDir(), APP_DIR, 'cache');
+export function getCacheDir() {
+    const dir = join(getBaseDir(), APP_DIR, 'cache');
     ensureDir(dir);
     return dir;
 }
-function ensureDir(dirPath) {
-    if (!(0, fs_1.existsSync)(dirPath)) {
-        (0, fs_1.mkdirSync)(dirPath, { recursive: true });
+export function ensureDir(dirPath) {
+    if (!existsSync(dirPath)) {
+        mkdirSync(dirPath, { recursive: true });
     }
 }
 //# sourceMappingURL=path.js.map
